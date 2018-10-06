@@ -227,6 +227,7 @@ class NumerizerTestEN < TestCase
   def test_billions_with_dollar_symbol
     assert_equal '$5000000000', Numerizer.numerize('$5 billion')
     assert_equal '$5123000000', Numerizer.numerize('$5.123 billion')
+    assert_equal '$24400000000', Numerizer.numerize('$24.4 billion')
   end
 
   def test_decimals
