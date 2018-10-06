@@ -105,6 +105,7 @@ class EnglishProvider < GenericProvider
   PRONOUNS = ['i','you','he','she','we','it','you','they','to','the'].reduce {|a,b| a + '|' + b}
 
   def preprocess(string, ignore)
+    string.gsub!(/,/, '') # de-comma
     string.gsub!(/ +|([^\d])-([^\d])/, '\1 \2') # will mutilate hyphenated-words
     string.gsub!(/\ba$/, '') && string.rstrip! # doesn't make sense for an 'a' at the end to be a 1
   end
@@ -117,7 +118,7 @@ class EnglishProvider < GenericProvider
 
     # easy/direct replacements
     string.gsub!(/(^|\W)(#{single_nums})(\s#{ten_prefs})(?=$|\W)/i) {$1 << $2 << ' hundred' << $3}
-    string.gsub!(/(^|\W)(#{dir_single_nums})(?=$|\W)/i) { $1 << '<num>' << DIRECT_SINGLE_NUMS[$2].to_s} 
+    string.gsub!(/(^|\W)(#{dir_single_nums})(?=$|\W)/i) { $1 << '<num>' << DIRECT_SINGLE_NUMS[$2].to_s}
     if bias == :ordinal
       string.gsub!(/(^|\W)\ba\b(?=$|\W)(?! (?:#{ALL_ORDINALS_REGEX}))/i, '\1<num>' + 1.to_s)
     else
@@ -168,8 +169,8 @@ class EnglishProvider < GenericProvider
   def numerize_big_prefixes(string, ignore, bias)
     # big_prefs = regexify(BIG_PREFIXES.keys, ignore: ignore)
     BIG_PREFIXES.each do |k,v|
-      next if ignore.include? k.downcase 
-      string.gsub!(/(?:<num>)?(\d*) *#{k}/i) { $1.empty? ? v : '<num>' << (v * $1.to_i).to_s }
+      next if ignore.include? k.downcase
+      string.gsub!(/(?:<num>)?(\d*\.?\d*) *#{k}/i) { $1.empty? ? v : '<num>' << (v * $1.to_f).to_i.to_s }
       andition(string)
     end
   end

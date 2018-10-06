@@ -189,4 +189,57 @@ class NumerizerTestEN < TestCase
     assert_equal 'I 1/4 your home', Numerizer.numerize('I quarter your home', bias: :fractional)
     assert_equal 'the 1st second 1/3',  Numerizer.numerize('the first second third', bias: :fractional)
   end
-end 
+
+  def test_thousands
+    assert_equal '1000', Numerizer.numerize('1 thousand')
+    assert_equal '1100', Numerizer.numerize('1.1 thousand')
+    assert_equal '100000', Numerizer.numerize('1 hundred thousand')
+  end
+
+  def test_thousands_with_dollar_symbol
+    assert_equal '$5000', Numerizer.numerize('$5 thousand')
+    assert_equal '$5100', Numerizer.numerize('$5.1 thousand')
+  end
+
+  def test_millions
+    assert_equal '1000000', Numerizer.numerize('1 million')
+    assert_equal '1100000', Numerizer.numerize('1.1 million')
+    assert_equal '230000000', Numerizer.numerize('230 million')
+    assert_equal '1000000', Numerizer.numerize('1000000')
+    assert_equal '1100000', Numerizer.numerize('1100000')
+    assert_equal '230000000', Numerizer.numerize('230000000')
+  end
+
+  def test_millions_with_dollar_symbol
+    assert_equal '$5000000', Numerizer.numerize('$5 million')
+    assert_equal '$5123000', Numerizer.numerize('$5.123 million')
+  end
+
+  def test_billions
+    assert_equal '1000000000', Numerizer.numerize('1 billion')
+    assert_equal '1100000000', Numerizer.numerize('1.1 billion')
+    assert_equal '672000000000', Numerizer.numerize('672 billion')
+    assert_equal '1000000000', Numerizer.numerize('1000000000')
+    assert_equal '1100000000', Numerizer.numerize('1100000000')
+    assert_equal '672000000000', Numerizer.numerize('672000000000')
+  end
+
+  def test_billions_with_dollar_symbol
+    assert_equal '$5000000000', Numerizer.numerize('$5 billion')
+    assert_equal '$5123000000', Numerizer.numerize('$5.123 billion')
+  end
+
+  def test_decimals
+    assert_equal '5.213', Numerizer.numerize('5.213')
+  end
+
+  def test_comma_grouped_numbers
+    assert_equal '5213123', Numerizer.numerize('5,213,123')
+    assert_equal '230000000', Numerizer.numerize('230,000,000')
+    assert_equal '672000000000', Numerizer.numerize('672,000,000,000')
+    assert_equal '1000000', Numerizer.numerize('1,000,000')
+    assert_equal '1100000', Numerizer.numerize('1,100,000')
+    assert_equal '54321', Numerizer.numerize('54,321')
+    assert_equal '4321', Numerizer.numerize('4,321')
+  end
+end
