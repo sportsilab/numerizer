@@ -6,6 +6,7 @@ class GenericProvider
     numerize_fractions(str, ignore, bias)
     numerize_ordinals(str, ignore, bias)
     numerize_big_prefixes(str, ignore, bias)
+    numerize_big_prefix_symbols(str, ignore, bias)
     postprocess(str, ignore)
   end
 
@@ -26,11 +27,14 @@ class GenericProvider
   def numerize_big_prefixes(str, ignore, bias)
     raise 'must be implemented in subclass'
   end
+  def numerize_big_prefix_symbols(str, ignore, bias)
+    raise 'must be implemented in subclass'
+  end
   def postprocess(str, ignore)
     raise 'must be implemented in subclass'
   end
 
-  # Turns list of words into a unionized list, ignoring words specified in 
+  # Turns list of words into a unionized list, ignoring words specified in
   # arguments or that meet the conditions of the yield block
   def regexify(words, ignore:[])
     if block_given?

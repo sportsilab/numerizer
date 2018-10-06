@@ -50,6 +50,13 @@ class EnglishProvider < GenericProvider
     'trillion' => 1_000_000_000_000,
   }
 
+  BIG_PREFIX_SYMBOLS = {
+    'K' => 1000,
+    'M' => 1_000_000,
+    'B' => 1_000_000_000,
+    'T' => 1_000_000_000_000,
+  }
+
   FRACTIONS = {
     'half' => 2,
     'halves' => 2,
@@ -175,11 +182,21 @@ class EnglishProvider < GenericProvider
     end
   end
 
+  # thousands (K), millions (M), etc.
+  def numerize_big_prefix_symbols(string, ignore, bias)
+    # big_prefs = regexify(BIG_PREFIXES.keys, ignore: ignore)
+    BIG_PREFIX_SYMBOLS.each do |k,v|
+      next if ignore.include? k.downcase
+      string.gsub!(/(?:<num>)?(\d*\.?\d*)#{k}\b/) { $1.empty? ? v : '<num>' << (v * $1.to_f).to_i.to_s }
+      andition(string)
+    end
+  end
+
   def postprocess(string, ignore)
     andition(string)
     numerize_halves(string, ignore)
     #Strip Away Added Num Tags
-    string.gsub(/<num>/, '')
+    string.gsub(/\$|<num>/, '')
   end
 
   private

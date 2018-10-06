@@ -196,9 +196,16 @@ class NumerizerTestEN < TestCase
     assert_equal '100000', Numerizer.numerize('1 hundred thousand')
   end
 
+  def test_thousands_as_symbol
+    assert_equal '1000', Numerizer.numerize('1K')
+    assert_equal '1100', Numerizer.numerize('1.1K')
+    assert_equal '1120', Numerizer.numerize('1.12K')
+    assert_equal '1123', Numerizer.numerize('1.123K')
+  end
+
   def test_thousands_with_dollar_symbol
-    assert_equal '$5000', Numerizer.numerize('$5 thousand')
-    assert_equal '$5100', Numerizer.numerize('$5.1 thousand')
+    assert_equal '5000', Numerizer.numerize('$5 thousand')
+    assert_equal '5100', Numerizer.numerize('$5.1 thousand')
   end
 
   def test_millions
@@ -210,9 +217,16 @@ class NumerizerTestEN < TestCase
     assert_equal '230000000', Numerizer.numerize('230000000')
   end
 
+  def test_millions_as_symbol
+    assert_equal '1000000', Numerizer.numerize('1M')
+    assert_equal '1100000', Numerizer.numerize('1.1M')
+    assert_equal '1120000', Numerizer.numerize('1.12M')
+    assert_equal '1123000', Numerizer.numerize('1.123M')
+  end
+
   def test_millions_with_dollar_symbol
-    assert_equal '$5000000', Numerizer.numerize('$5 million')
-    assert_equal '$5123000', Numerizer.numerize('$5.123 million')
+    assert_equal '5000000', Numerizer.numerize('$5 million')
+    assert_equal '5123000', Numerizer.numerize('$5.123 million')
   end
 
   def test_billions
@@ -225,9 +239,16 @@ class NumerizerTestEN < TestCase
   end
 
   def test_billions_with_dollar_symbol
-    assert_equal '$5000000000', Numerizer.numerize('$5 billion')
-    assert_equal '$5123000000', Numerizer.numerize('$5.123 billion')
-    assert_equal '$24400000000', Numerizer.numerize('$24.4 billion')
+    assert_equal '5000000000', Numerizer.numerize('$5 billion')
+    assert_equal '5123000000', Numerizer.numerize('$5.123 billion')
+    assert_equal '24400000000', Numerizer.numerize('$24.4 billion')
+  end
+
+  def test_billions_as_symbol
+    assert_equal '1000000000', Numerizer.numerize('1B')
+    assert_equal '1100000000', Numerizer.numerize('1.1B')
+    assert_equal '1120000000', Numerizer.numerize('1.12B')
+    assert_equal '1123000000', Numerizer.numerize('1.123B')
   end
 
   def test_decimals
