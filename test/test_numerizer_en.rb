@@ -264,4 +264,26 @@ class NumerizerTestEN < TestCase
     assert_equal '54321', Numerizer.numerize('54,321')
     assert_equal '4321', Numerizer.numerize('4,321')
   end
+
+  def test_comma_grouped_numbers_with_dollar_symbol
+    assert_equal '15395', Numerizer.numerize('$15,395')
+  end
+
+  def test_percent_as_symbol
+    assert_equal '0.15', Numerizer.numerize('15%')
+    assert_equal '0.152', Numerizer.numerize('15.2%')
+    assert_equal '1.52', Numerizer.numerize('152%')
+  end
+
+  def test_percent
+    assert_equal '0.15', Numerizer.numerize('15 percent')
+    assert_equal '0.152', Numerizer.numerize('15.2 percent')
+    assert_equal '1.52', Numerizer.numerize('152 percent')
+  end
+
+  def test_per_cent
+    assert_equal '0.15', Numerizer.numerize('15 per cent')
+    assert_equal '0.152', Numerizer.numerize('15.2 per cent')
+    assert_equal '1.52', Numerizer.numerize('152 per cent')
+  end
 end

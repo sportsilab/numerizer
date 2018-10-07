@@ -100,6 +100,15 @@ class EnglishProvider < GenericProvider
     'ninetieth' => '90'
   }
 
+  PERCENT_PREFIXES = {
+    'percent' => 0.01,
+    'per cent' => 0.01,
+  }
+
+  PERCENT_PREFIX_SYMBOLS = {
+    '\%' => 0.01,
+  }
+
   ALL_ORDINALS = ORDINALS.merge(SINGLE_ORDINAL_FRACTIONALS).merge(DIRECT_ORDINAL_FRACTIONALS)
   ONLY_PLURAL_FRACTIONS = FRACTIONS.merge((SINGLE_ORDINAL_FRACTIONALS.merge(DIRECT_ORDINAL_FRACTIONALS)).inject({ }) {|h, (k,v)| h[k + 's'] = v ; h})
   ALL_FRACTIONS = ONLY_PLURAL_FRACTIONS.merge(SINGLE_ORDINAL_FRACTIONALS).merge(DIRECT_ORDINAL_FRACTIONALS)
@@ -188,6 +197,26 @@ class EnglishProvider < GenericProvider
     BIG_PREFIX_SYMBOLS.each do |k,v|
       next if ignore.include? k.downcase
       string.gsub!(/(?:<num>)?(\d*\.?\d*)#{k}\b/) { $1.empty? ? v : '<num>' << (v * $1.to_f).to_i.to_s }
+      andition(string)
+    end
+  end
+
+  # percent, per cent
+  def numerize_percent_prefixes(string, ignore, bias)
+    # big_prefs = regexify(BIG_PREFIXES.keys, ignore: ignore)
+    PERCENT_PREFIXES.each do |k,v|
+      next if ignore.include? k.downcase
+      string.gsub!(/(?:<num>)?(\d*\.?\d*) #{k}\b/) { $1.empty? ? v : '<num>' << (v * $1.to_f).to_f.to_s }
+      andition(string)
+    end
+  end
+
+  # %
+  def numerize_percent_prefix_symbols(string, ignore, bias)
+    # big_prefs = regexify(BIG_PREFIXES.keys, ignore: ignore)
+    PERCENT_PREFIX_SYMBOLS.each do |k,v|
+      next if ignore.include? k.downcase
+      string.gsub!(/(?:<num>)?(\d*\.?\d*)#{k}/) { $1.empty? ? v : '<num>' << (v * $1.to_f).to_f.to_s }
       andition(string)
     end
   end

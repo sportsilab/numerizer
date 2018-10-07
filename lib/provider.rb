@@ -7,6 +7,8 @@ class GenericProvider
     numerize_ordinals(str, ignore, bias)
     numerize_big_prefixes(str, ignore, bias)
     numerize_big_prefix_symbols(str, ignore, bias)
+    numerize_percent_prefixes(str, ignore, bias)
+    numerize_percent_prefix_symbols(str, ignore, bias)
     postprocess(str, ignore)
   end
 
@@ -28,6 +30,12 @@ class GenericProvider
     raise 'must be implemented in subclass'
   end
   def numerize_big_prefix_symbols(str, ignore, bias)
+    raise 'must be implemented in subclass'
+  end
+  def numerize_percent_prefixes(str, ignore, bias)
+    raise 'must be implemented in subclass'
+  end
+  def numerize_percent_prefix_symbols(str, ignore, bias)
     raise 'must be implemented in subclass'
   end
   def postprocess(str, ignore)

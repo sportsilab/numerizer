@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    numerizer (0.2.2)
+    numerizer (0.2.3)
 
 GEM
   remote: https://rubygems.org/
